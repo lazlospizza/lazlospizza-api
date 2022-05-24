@@ -44,7 +44,8 @@ node_modules/
 /coverage
 
 # production
-/build
+build/
+dist/
 
 # TypeScript v1 declaration files
 typings/
