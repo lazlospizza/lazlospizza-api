@@ -14,15 +14,12 @@ phases:
   build:
     commands:
       - "yarn build"
-      - "yarn db:migration"
 artifacts:
     type: zip
     files:
         - package.json
         - yarn.lock
-        - ormconfig.js
         - 'dist/**/*'
         - node_modules/**/*
         - .ebextensions/**/*
         - .platform/**/*
-        - public/**/*
