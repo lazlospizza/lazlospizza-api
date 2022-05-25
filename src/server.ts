@@ -3,7 +3,7 @@ import { initListeners } from 'services/ethers'
 
 import app from './app'
 
-const port = 4000
+const port = process.env.PORT || 4000
 const server = http.createServer(app)
 
 const createServer = async () => {
