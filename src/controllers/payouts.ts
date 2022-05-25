@@ -20,8 +20,7 @@ export const getPayoutForAddress = async (req: Request, res: Response) => {
   try {
     if (!process.env.PAYOUT_DB) throw 'missing payout db'
     if (!process.env.PRIVATE_KEY) throw 'missing private key'
-    const { address } = req.params
-    const { block } = req.query
+    const { address, block } = req.query
     const payoutsRes = await axios.get(process.env.PAYOUT_DB)
     const payoutAmount =
       payoutsRes.data[`${address}`]?.find(
