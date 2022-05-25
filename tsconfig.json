@@ -1,18 +1,30 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
-    "outDir": "dist",
-    "baseUrl": "src",
-    "allowJs": true,
-    "removeComments": true,
-    "strict": true,
-    "esModuleInterop": true,
+    "target": "es2017",
+    "lib": ["es2017", "esnext.asynciterable"],
+    "typeRoots": ["node_modules/@types"],
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
-  }
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "pretty": true,
+    "outDir": "./dist",
+    "allowJs": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "/"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.json", ".env", "src/workers/bree.js"],
+  "exclude": ["node_modules"]
 }
