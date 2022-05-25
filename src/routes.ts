@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import { getPizzaImage, getPizzas, getRandomPizza } from './controllers/pizzas'
 import {
   getPayoutForAddress,
@@ -7,6 +7,13 @@ import {
 } from './controllers/payouts'
 
 const router = express.Router()
+
+// health check
+
+router.route('/').get((req: Request, res: Response) => {
+  res.status(200)
+  res.send("Lazlo's Pizza API")
+})
 
 // pizzas
 
