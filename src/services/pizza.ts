@@ -7,6 +7,7 @@ import {
 import { ETH, ZERO_ADDRESS } from '../constants'
 import { uploadJsonToS3, S3Folder } from './s3'
 import axios from 'axios'
+import { uniqBy } from 'lodash'
 
 export enum IngredientKey {
   'name' = 'name',
@@ -266,4 +267,87 @@ export const saveWinningPizzas = async () => {
     return null
 
   await uploadJsonToS3(winningPizzas, S3Folder.winning_pizzas)
+}
+
+const ALL_INGREDIENTS = [
+  { name: 'Gluten Free Base', ingredientType: 0, id: 1 },
+  { name: 'Plain Base', ingredientType: 0, id: 2 },
+  { name: 'BBQ Sauce', ingredientType: 1, id: 3 },
+  { name: 'Chilli Sauce', ingredientType: 1, id: 4 },
+  { name: 'Tomato Sauce', ingredientType: 1, id: 5 },
+  { name: 'Garlic Sauce', ingredientType: 1, id: 6 },
+  { name: 'Cheddar Cheese', ingredientType: 2, id: 7 },
+  { name: 'Goat Cheese', ingredientType: 2, id: 8 },
+  { name: 'Mozzarella', ingredientType: 2, id: 9 },
+  { name: 'Anchovies', ingredientType: 3, id: 10 },
+  { name: 'Beef', ingredientType: 3, id: 11 },
+  { name: 'Chicken', ingredientType: 3, id: 12 },
+  { name: 'Chorizo', ingredientType: 3, id: 13 },
+  { name: 'Ham', ingredientType: 3, id: 14 },
+  { name: 'Pepperonis', ingredientType: 3, id: 15 },
+  { name: 'Salami', ingredientType: 3, id: 16 },
+  { name: 'Tuna', ingredientType: 3, id: 17 },
+  { name: 'Corn', ingredientType: 4, id: 18 },
+  { name: 'Chillies', ingredientType: 4, id: 19 },
+  { name: 'Green Peppers', ingredientType: 4, id: 20 },
+  { name: 'Jalapenos', ingredientType: 4, id: 21 },
+  { name: 'Mushroom', ingredientType: 4, id: 22 },
+  { name: 'Onion', ingredientType: 4, id: 23 },
+  { name: 'Pineapple', ingredientType: 4, id: 24 },
+  { name: 'Red Pepper', ingredientType: 4, id: 25 },
+]
+
+const randomIntFromInterval = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const getRandomIngredientFromType = (ingredientType: number) => {
+  const ingredients = ALL_INGREDIENTS.filter(
+    (ingredient) => ingredient.ingredientType === ingredientType,
+  )
+  return ingredients[randomIntFromInterval(0, ingredients.length - 1)]
+}
+
+export const getRandomPizza = () => {
+  const base = getRandomIngredientFromType(0)
+  const sauce = getRandomIngredientFromType(1)
+
+  const numCheeses = randomIntFromInterval(1, 3)
+  let cheeses: {
+    name: string
+    ingredientType: number
+    id: number
+  }[] = []
+  for (let i = 0; i < numCheeses; i += 1) {
+    cheeses.push(getRandomIngredientFromType(2))
+    cheeses = uniqBy(cheeses, 'id')
+  }
+  const numMeats = randomIntFromInterval(1, 4)
+  let meats: {
+    name: string
+    ingredientType: number
+    id: number
+  }[] = []
+  for (let i = 0; i < numMeats; i += 1) {
+    meats.push(getRandomIngredientFromType(3))
+    meats = uniqBy(meats, 'id')
+  }
+  const numToppings = randomIntFromInterval(1, 4)
+  let toppings: {
+    name: string
+    ingredientType: number
+    id: number
+  }[] = []
+  for (let i = 0; i < numToppings; i += 1) {
+    toppings.push(getRandomIngredientFromType(4))
+    toppings = uniqBy(toppings, 'id')
+  }
+
+  return [
+    base.id,
+    sauce.id,
+    ...cheeses.map(({ id }) => id),
+    ...meats.map(({ id }) => id),
+    ...toppings.map(({ id }) => id),
+  ]
 }

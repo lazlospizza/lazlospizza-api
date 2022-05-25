@@ -1,7 +1,7 @@
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { NextFunction, Request, Response } from 'express'
-import restRouter from './v1'
+import restRouter from './router'
 
 dotenv.config()
 
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false, limit: TEN_MB }))
 app.use(cors())
 
 // setup rest
-app.use('/api/v1', restRouter())
+app.use('/', restRouter())
 
 // errors & edge cases
 app.use((err: any, req: Request, res: Response, _: NextFunction) => {
