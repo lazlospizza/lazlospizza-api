@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import { Pizza } from '../types';
-import * as payoutService from '../services/payout';
 
 export const getPayouts = async (req: Request, res: Response) => {
   try {
-    const payouts = await payoutService.calculatePayouts(0);
-    return res.send({ payouts });
+    if (!process.env.PAYOUT_DB) throw 'missing payout db';
+    const payoutsRes = await axios.get(process.env.PAYOUT_DB);
+    const payouts = payoutsRes.data;
+
+    return res.send(payouts);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -31,7 +33,7 @@ export const getWinningPizzas = async (req: Request, res: Response) => {
     const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
     const winningPizzas = winningPizzasRes.data as Pizza[];
 
-    return res.send({ winningPizzas });
+    return res.send(winningPizzas);
   } catch (error) {
     return res.status(500).json(error);
   }
