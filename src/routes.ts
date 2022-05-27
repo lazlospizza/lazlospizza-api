@@ -22,5 +22,6 @@ router.route('/tokens/:tokenId/pizza_image.png').get(getPizzaImage);
 router.route('/payouts').get(getPayouts);
 router.route('/payout').get(getPayoutForAddress);
 router.route('/winning_pizzas').get(getWinningPizzas);
+router.route('/winners').get(getWinningPizzas);
 
 export default router;

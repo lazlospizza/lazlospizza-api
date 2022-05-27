@@ -120,7 +120,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
     rarity: rarity,
   }));
 
-  await saveWinningPizzas();
+  await saveWinningPizzas(true);
 
   const payouts = [...creatorPayouts, ...rarityRewardPayouts];
 
@@ -145,6 +145,10 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
     }
     await uploadJsonToS3(payoutsFromDb, S3Folder.payouts);
   }
+
+  const winnersRes = await axios.get(process.env.WINNERS_DB);
+  const winners = winnersRes.data;
+  await uploadJsonToS3([...winningPizzas.map(pizza => ({ ...pizza, rewardedOn: now })), ...winners], S3Folder.winners);
 
   isCalculating = false;
 
