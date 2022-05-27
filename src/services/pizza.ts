@@ -178,17 +178,18 @@ export const getRarestPizzas = async () => {
   return rarestPizzas;
 };
 
-export const saveWinningPizzas = async () => {
+export const saveWinningPizzas = async (override = false) => {
   if (!process.env.WINNING_PIZZAS_DB) throw 'missing winning pizzas db';
   console.log('getting the winning pizzas');
   const rarestPizzas = await getRarestPizzas();
 
   const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
-  const winningPizzas = winningPizzasRes.data as Pizza[];
+  const winningPizzas = (winningPizzasRes.data || []) as Pizza[];
 
-  if (rarestPizzas[0]?.rarity && winningPizzas[0]?.rarity && rarestPizzas[0].rarity > winningPizzas[0].rarity) return null;
+  if (!override && winningPizzas.length && rarestPizzas[0]?.rarity && winningPizzas[0]?.rarity && rarestPizzas[0].rarity > winningPizzas[0].rarity)
+    return null;
 
-  await uploadJsonToS3(winningPizzas, S3Folder.winning_pizzas);
+  await uploadJsonToS3(rarestPizzas, S3Folder.winning_pizzas);
 };
 
 const ALL_INGREDIENTS = [

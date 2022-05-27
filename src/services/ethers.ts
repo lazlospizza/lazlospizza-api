@@ -1,6 +1,7 @@
 import { BigNumber, providers } from 'ethers';
 import { LazlosIngredients__factory, LazlosPizzas__factory } from '../typechain-types';
 import { saveWinningPizzas } from './pizza';
+import { calculatePayouts } from './payout';
 
 const ZeroAddress = '0x0000000000000000000000000000000000000000';
 
@@ -34,4 +35,12 @@ export const initListeners = () => {
   ingredientsContract.on('TransferSingle', (operator: string, from: string, to: string, ids: BigNumber[], amounts: BigNumber[], txn) =>
     onMintOrBurn(from, to),
   );
+  infuraProvider.on('block', async blockNumber => {
+    console.log(blockNumber);
+    const blockInterval = process.env.PAYOUT_BLOCK_INTERVAL ? Number(process.env.PAYOUT_BLOCK_INTERVAL) : 10000;
+    if (blockNumber / blockInterval === Math.floor(blockNumber / blockInterval)) {
+      const payouts = await calculatePayouts(blockNumber, true);
+      console.log(payouts);
+    }
+  });
 };

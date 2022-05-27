@@ -1,11 +1,13 @@
 import { providers } from 'ethers';
 import { LazlosPizzaShop__factory } from '../typechain-types';
-import { getIngredients } from './pizza';
+import { getIngredients, saveWinningPizzas } from './pizza';
 import { uniq } from 'lodash';
 import axios from 'axios';
 import { Pizza } from 'types';
 import { ETH } from '../constants';
 import { S3Folder, uploadJsonToS3 } from './s3';
+
+let isCalculating = false;
 
 export const getArtistUnclaimedPayout = async () => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
@@ -61,12 +63,18 @@ export const getUnclaimedPayouts = async () => {
   return unclaimedPayouts;
 };
 
-export const calculatePayouts = async () => {
+export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   if (!process.env.WINNING_PIZZAS_DB) throw 'missing winning pizzas db';
+  if (!process.env.PAYOUT_DB) throw 'missing winning payout db';
+  if (isCalculating) {
+    return console.log('is already calculating...', block);
+  }
+
+  isCalculating = true;
 
   const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
-  const winningPizzas = winningPizzasRes.data as Pizza[];
+  const winningPizzas = (winningPizzasRes.data || []) as Pizza[];
 
   const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
   const _balance = await infuraProvider.getBalance(process.env.MAIN_CONTRACT_ADDRESS);
@@ -86,18 +94,20 @@ export const calculatePayouts = async () => {
 
   const now = Math.floor(Date.now() / 1000);
 
-  const payouts = [
+  const creatorPayouts = [
     {
       address: process.env.CREATOR_WALLET,
       payout_amount: creatorRewards,
       reason: 'Creator',
       timestamp: now,
+      token_id: null,
     },
     {
       address: process.env.DEVELOPER_WALLET,
       payout_amount: developerRewards,
       reason: 'Developer',
       timestamp: now,
+      token_id: null,
     },
   ];
 
@@ -110,7 +120,33 @@ export const calculatePayouts = async () => {
     rarity: rarity,
   }));
 
-  await uploadJsonToS3([], S3Folder.winning_pizzas);
+  await saveWinningPizzas();
 
-  return [...payouts, ...rarityRewardPayouts];
+  const payouts = [...creatorPayouts, ...rarityRewardPayouts];
+
+  if (uploadToS3) {
+    const payoutDbRes = await axios.get(process.env.PAYOUT_DB);
+    const payoutsFromDb = payoutDbRes.data;
+    for (let i = 0; i < payouts.length; i += 1) {
+      const payout = payouts[i];
+      const entry = {
+        block,
+        payout_amount: payout.payout_amount,
+        token_id: payout.token_id ?? null,
+        timestamp: payout.timestamp,
+      };
+      if (payoutsFromDb[payout.address]) {
+        if (!payoutsFromDb[payout.address].find(_payout => _payout.block === block && _payout.token_id === payout.token_id)) {
+          payoutsFromDb[payout.address].push(entry);
+        }
+      } else {
+        payoutsFromDb[payout.address] = [entry];
+      }
+    }
+    await uploadJsonToS3(payoutsFromDb, S3Folder.payouts);
+  }
+
+  isCalculating = false;
+
+  return payouts;
 };
