@@ -3,6 +3,7 @@ import S3 from 'aws-sdk/clients/s3';
 export enum S3Folder {
   'payouts' = 'payouts',
   'winning_pizzas' = 'winning_pizzas',
+  'winners' = 'winners',
 }
 
 export const uploadJsonToS3 = async (json: any, folder: S3Folder) => {

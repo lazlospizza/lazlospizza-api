@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { Pizza } from '../types';
 
 export const getPayouts = async (req: Request, res: Response) => {
   try {
@@ -31,9 +30,21 @@ export const getWinningPizzas = async (req: Request, res: Response) => {
   try {
     if (!process.env.WINNING_PIZZAS_DB) throw 'missing winning pizzas db';
     const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
-    const winningPizzas = winningPizzasRes.data as Pizza[];
+    const winningPizzas = winningPizzasRes.data;
 
     return res.send(winningPizzas);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+export const getWinners = async (req: Request, res: Response) => {
+  try {
+    if (!process.env.WINNERS_DB) throw 'missing winners db';
+    const winnersRes = await axios.get(process.env.WINNERS_DB);
+    const winners = winnersRes.data;
+
+    return res.send(winners);
   } catch (error) {
     return res.status(500).json(error);
   }
