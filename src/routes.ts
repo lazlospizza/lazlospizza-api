@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { getPizzaImage, getPizzas, getRandomPizza } from './controllers/pizzas';
-import { getPayoutForAddress, getPayouts, getWinningPizzas } from './controllers/payouts';
+import { getCalculatedPayouts, getPayoutForAddress, getPayouts, getWinningPizzas } from './controllers/payouts';
 
 const router = express.Router();
 
@@ -21,6 +21,7 @@ router.route('/tokens/:tokenId/pizza_image.png').get(getPizzaImage);
 
 router.route('/payouts').get(getPayouts);
 router.route('/payout').get(getPayoutForAddress);
+router.route('/calculate-payouts').get(getCalculatedPayouts);
 router.route('/winning_pizzas').get(getWinningPizzas);
 router.route('/winners').get(getWinningPizzas);
 

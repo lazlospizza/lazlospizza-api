@@ -1,5 +1,18 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
+import { blockNumber } from 'services/ethers';
+import { calculatePayouts } from 'services/payout';
+
+export const getCalculatedPayouts = async (req: Request, res: Response) => {
+  try {
+    if (!process.env.PAYOUT_DB) throw 'missing payout db';
+    const payouts = await calculatePayouts(blockNumber, true);
+
+    return res.send(payouts);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
 
 export const getPayouts = async (req: Request, res: Response) => {
   try {
