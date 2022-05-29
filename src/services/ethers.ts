@@ -4,6 +4,7 @@ import { saveWinningPizzas } from './pizza';
 import { calculatePayouts } from './payout';
 
 const ZeroAddress = '0x0000000000000000000000000000000000000000';
+export let blockNumber = 0;
 
 export const onMintOrBurn = (from: string, to: string) => {
   if (from === ZeroAddress || to === ZeroAddress) {
@@ -35,9 +36,11 @@ export const initListeners = () => {
   ingredientsContract.on('TransferSingle', (operator: string, from: string, to: string, ids: BigNumber[], amounts: BigNumber[], txn) =>
     onMintOrBurn(from, to),
   );
-  infuraProvider.on('block', async blockNumber => {
+  infuraProvider.on('block', async _blockNumber => {
+    blockNumber = _blockNumber;
     console.log(blockNumber);
-    const blockInterval = process.env.PAYOUT_BLOCK_INTERVAL ? Number(process.env.PAYOUT_BLOCK_INTERVAL) : 10000;
+    if (!process.env.PAYOUT_BLOCK_INTERVAL || !Number(process.env.PAYOUT_BLOCK_INTERVAL)) return null;
+    const blockInterval = Number(process.env.PAYOUT_BLOCK_INTERVAL);
     if (blockNumber / blockInterval === Math.floor(blockNumber / blockInterval)) {
       const payouts = await calculatePayouts(blockNumber, true);
       console.log(payouts);
