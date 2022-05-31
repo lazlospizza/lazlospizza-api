@@ -4,10 +4,8 @@ import { getIngredients, saveWinningPizzas } from './pizza';
 import { uniq } from 'lodash';
 import axios from 'axios';
 import { Pizza } from 'types';
-import { ETH } from '../constants';
 import { S3Folder, uploadJsonToS3 } from './s3';
-
-let isCalculating = false;
+import { ETH } from '../constants';
 
 export const getArtistUnclaimedPayout = async () => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
@@ -15,6 +13,7 @@ export const getArtistUnclaimedPayout = async () => {
   const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
   const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, infuraProvider);
   const ingredients = await getIngredients();
+
   const artists: string[] = uniq(ingredients.map(({ artist }) => artist));
 
   let unclaimedTotal = 0;
@@ -24,7 +23,7 @@ export const getArtistUnclaimedPayout = async () => {
       const _allowedWithdrawalAmount = await contract.artistAllowedWithdrawalAmount(artist);
       const allowedWithdrawalAmount = parseInt(_allowedWithdrawalAmount._hex, 16);
       if (allowedWithdrawalAmount > 0) {
-        unclaimedTotal += allowedWithdrawalAmount / ETH;
+        unclaimedTotal += allowedWithdrawalAmount;
       }
     } catch (e) {
       console.log(e);
@@ -40,24 +39,30 @@ export const getUnclaimedPayouts = async () => {
   const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
   const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, infuraProvider);
 
-  const res = await axios.get(process.env.PAYOUT_DB);
+  let payoutHistory = {};
 
-  const payoutHistory = res.data;
+  try {
+    const res = await axios.get(process.env.PAYOUT_DB);
+    payoutHistory = res.data;
+  } catch (e) {
+    console.log(e);
+  }
+
   const payoutAddresses = Object.keys(payoutHistory);
   const unclaimedPayouts = [];
 
   for (let i = 0; i < payoutAddresses.length; i += 1) {
-    const payouts = payoutHistory[payoutAddresses[i]]
-      ?.map(async (payout: any) => {
+    const allAddressPayouts = await Promise.all(
+      (payoutHistory[payoutAddresses[i]] || []).map(async (payout: any) => {
         const isPaidOut = await contract.isPaidOutForBlock(payoutAddresses[i], payout.block);
-        if (isPaidOut) {
+        if (!isPaidOut) {
           return { address: payoutAddresses[i], payout };
         }
         return null;
-      })
-      .filter((payout: any) => !!payout);
-
-    unclaimedPayouts.push(...payouts);
+      }),
+    );
+    const unclaimedAddressPayouts = allAddressPayouts.filter((payout: any) => !!payout);
+    unclaimedPayouts.push(...unclaimedAddressPayouts);
   }
 
   return unclaimedPayouts;
@@ -67,25 +72,32 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   if (!process.env.WINNING_PIZZAS_DB) throw 'missing winning pizzas db';
   if (!process.env.PAYOUT_DB) throw 'missing winning payout db';
-  if (isCalculating) {
-    return console.log('is already calculating...', block);
+
+  console.log('calculate payouts');
+
+  let winningPizzas: Pizza[] = [];
+  try {
+    const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
+    winningPizzas = (winningPizzasRes.data || []) as Pizza[];
+  } catch (e) {
+    console.log(e);
   }
 
-  isCalculating = true;
-
-  const winningPizzasRes = await axios.get(process.env.WINNING_PIZZAS_DB);
-  const winningPizzas = (winningPizzasRes.data || []) as Pizza[];
+  console.log(winningPizzas);
 
   const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
   const _balance = await infuraProvider.getBalance(process.env.MAIN_CONTRACT_ADDRESS);
-  const balance = parseInt(_balance._hex, 16) / ETH;
+  const balance = parseInt(_balance._hex, 16);
   const unclaimedPayouts = await getUnclaimedPayouts();
 
-  const unclaimedPayoutsTotal: number = unclaimedPayouts.reduce(
-    (prev, current) => prev + (current.payout?.payout_amount ? current.payout?.payout_amount / ETH : 0),
-    0,
-  );
+  const unclaimedPayoutsTotal: number =
+    unclaimedPayouts.reduce((prev, current) => prev + (current.payout?.payout_amount ? current.payout?.payout_amount : 0), 0) * ETH;
+
+  console.log({ unclaimedPayoutsTotal });
+
   const artistUnclaimedTotal = await getArtistUnclaimedPayout();
+
+  console.log({ artistUnclaimedTotal });
 
   const prizePool = balance - unclaimedPayoutsTotal - artistUnclaimedTotal;
   const developerRewards = prizePool * 0.0025;
@@ -113,7 +125,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
 
   const rarityRewardPayouts = winningPizzas.map(({ owner, tokenId, rarity }) => ({
     address: owner,
-    payout_amount: rarityRewards / winningPizzas.length,
+    payout_amount: Math.floor(rarityRewards / winningPizzas.length),
     reason: 'Rarity reward',
     timestamp: now,
     token_id: tokenId,
@@ -125,17 +137,23 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   const payouts = [...creatorPayouts, ...rarityRewardPayouts];
 
   if (uploadToS3) {
-    const payoutDbRes = await axios.get(process.env.PAYOUT_DB);
-    const payoutsFromDb = payoutDbRes.data;
+    let payoutsFromDb = {};
+    try {
+      const payoutDbRes = await axios.get(process.env.PAYOUT_DB);
+      payoutsFromDb = payoutDbRes.data;
+    } catch (e) {
+      console.log(e);
+    }
     for (let i = 0; i < payouts.length; i += 1) {
       const payout = payouts[i];
       const entry = {
         block,
-        payout_amount: payout.payout_amount,
+        payout_amount: payout.payout_amount / ETH,
         token_id: payout.token_id ?? null,
         timestamp: payout.timestamp,
       };
       if (payoutsFromDb[payout.address]) {
+        payoutsFromDb[payout.address] = payoutsFromDb[payout.address].filter(entry => !!entry.token_id);
         if (!payoutsFromDb[payout.address].find(_payout => _payout.block === block && _payout.token_id === payout.token_id)) {
           payoutsFromDb[payout.address].push(entry);
         }
@@ -149,8 +167,6 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   const winnersRes = await axios.get(process.env.WINNERS_DB);
   const winners = winnersRes.data;
   await uploadJsonToS3([...winningPizzas.map(pizza => ({ ...pizza, rewardedOn: now })), ...winners], S3Folder.winners);
-
-  isCalculating = false;
 
   return payouts;
 };

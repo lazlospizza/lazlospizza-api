@@ -6,7 +6,7 @@ import { calculatePayouts } from 'services/payout';
 export const getCalculatedPayouts = async (req: Request, res: Response) => {
   try {
     if (!process.env.PAYOUT_DB) throw 'missing payout db';
-    const payouts = await calculatePayouts(blockNumber, true);
+    const payouts = await calculatePayouts(blockNumber || 10762980, true);
 
     return res.send(payouts);
   } catch (error) {
@@ -17,8 +17,13 @@ export const getCalculatedPayouts = async (req: Request, res: Response) => {
 export const getPayouts = async (req: Request, res: Response) => {
   try {
     if (!process.env.PAYOUT_DB) throw 'missing payout db';
-    const payoutsRes = await axios.get(process.env.PAYOUT_DB);
-    const payouts = payoutsRes.data;
+    let payouts = {};
+    try {
+      const payoutsRes = await axios.get(process.env.PAYOUT_DB);
+      payouts = payoutsRes.data;
+    } catch (e) {
+      console.log(e);
+    }
 
     return res.send(payouts);
   } catch (error) {
