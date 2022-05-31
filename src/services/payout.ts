@@ -153,7 +153,6 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
         timestamp: payout.timestamp,
       };
       if (payoutsFromDb[payout.address]) {
-        payoutsFromDb[payout.address] = payoutsFromDb[payout.address].filter(entry => !!entry.token_id);
         if (!payoutsFromDb[payout.address].find(_payout => _payout.block === block && _payout.token_id === payout.token_id)) {
           payoutsFromDb[payout.address].push(entry);
         }
