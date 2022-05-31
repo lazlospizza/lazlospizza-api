@@ -113,7 +113,7 @@ export const getPizzas = async () => {
 
   const ingredients: Ingredient[] = _ingredients.map(ingredient => {
     const numberOfPizzas = _pizzas.filter(pizza => pizza.allIngredients.find((tokenId: number) => tokenId === ingredient.tokenId)).length;
-    const rarity = (numberOfPizzas / _pizzas.length) * 100;
+    const rarity = Math.round((numberOfPizzas * 10000) / _pizzas.length) / 100;
     return { ...ingredient, numberOfPizzas, rarity };
   });
 
@@ -149,7 +149,7 @@ export const getPizzas = async () => {
       const rarityIngredients = [...pizza.allIngredients, ...ingredientsMissing];
 
       const raritySum = rarityIngredients.reduce((prev, current) => prev + (current.rarity ?? 100), 0);
-      const rarity = raritySum / rarityIngredients.length;
+      const rarity = Math.round((raritySum * 1000) / rarityIngredients.length) / 1000;
 
       return { ...pizza, rarity };
     }),

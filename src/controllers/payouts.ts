@@ -17,10 +17,15 @@ export const getCalculatedPayouts = async (req: Request, res: Response) => {
 export const getPayouts = async (req: Request, res: Response) => {
   try {
     if (!process.env.PAYOUT_DB) throw 'missing payout db';
-    let payouts = {};
+    let payouts: any = [];
     try {
+      const { address } = req.query;
       const payoutsRes = await axios.get(process.env.PAYOUT_DB);
-      payouts = payoutsRes.data;
+      if (address) {
+        payouts = payoutsRes.data?.[`${address}`];
+      } else {
+        payouts = payoutsRes.data;
+      }
     } catch (e) {
       console.log(e);
     }
