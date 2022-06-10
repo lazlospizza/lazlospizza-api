@@ -148,12 +148,11 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
       const payout = payouts[i];
       const entry = {
         block,
-        payout_amount: payout.payout_amount / ETH,
+        payout_amount: Math.round((payout.payout_amount / ETH) * 1000) / 1000,
         token_id: payout.token_id ?? null,
         timestamp: payout.timestamp,
       };
       if (payoutsFromDb[payout.address]) {
-        payoutsFromDb[payout.address] = payoutsFromDb[payout.address].filter(entry => !!entry.token_id);
         if (!payoutsFromDb[payout.address].find(_payout => _payout.block === block && _payout.token_id === payout.token_id)) {
           payoutsFromDb[payout.address].push(entry);
         }
@@ -166,7 +165,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
 
   const winnersRes = await axios.get(process.env.WINNERS_DB);
   const winners = winnersRes.data;
-  await uploadJsonToS3([...winningPizzas.map(pizza => ({ ...pizza, rewardedOn: now })), ...winners], S3Folder.winners);
+  await uploadJsonToS3([...winningPizzas.map(pizza => ({ ...pizza, rewardedOn: now, block })), ...winners], S3Folder.winners);
 
   return payouts;
 };
