@@ -91,7 +91,8 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   const unclaimedPayouts = await getUnclaimedPayouts();
 
   const unclaimedPayoutsTotal: number =
-    unclaimedPayouts.reduce((prev, current) => prev + (current.payout?.payout_amount ? current.payout?.payout_amount : 0), 0) * ETH;
+    unclaimedPayouts.reduce((prev, current) => Number(prev + (current.payout?.payout_amount ? current.payout?.payout_amount : 0).toFixed(7)), 0) *
+    ETH;
 
   console.log({ unclaimedPayoutsTotal });
 
