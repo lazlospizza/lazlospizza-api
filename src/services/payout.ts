@@ -5,7 +5,6 @@ import { uniq } from 'lodash';
 import axios from 'axios';
 import { Pizza } from 'types';
 import { S3Folder, uploadJsonToS3 } from './s3';
-import { ETH } from '../constants';
 
 export const getArtistUnclaimedPayout = async () => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
@@ -90,11 +89,10 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   const balance = parseInt(_balance._hex, 16);
   const unclaimedPayouts = await getUnclaimedPayouts();
 
-  const unclaimedPayoutsTotal: number =
-    unclaimedPayouts.reduce(
-      (prev, current) => Number(prev + Number((current.payout?.payout_amount ? current.payout?.payout_amount : 0).toFixed(7))),
-      0,
-    ) * ETH;
+  const unclaimedPayoutsTotal: number = unclaimedPayouts.reduce(
+    (prev, current) => (prev + current.payout?.payout_amount ? current.payout?.payout_amount : 0),
+    0,
+  );
 
   console.log({ unclaimedPayoutsTotal });
 
@@ -103,9 +101,9 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   console.log({ artistUnclaimedTotal });
 
   const prizePool = balance - unclaimedPayoutsTotal - artistUnclaimedTotal;
-  const developerRewards = prizePool * 0.0025;
-  const creatorRewards = prizePool * 0.0075;
-  const rarityRewards = prizePool * 0.01;
+  const developerRewards = Math.round(prizePool * 0.0025);
+  const creatorRewards = Math.round(prizePool * 0.0075);
+  const rarityRewards = Math.round(prizePool * 0.01);
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -151,7 +149,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
       const payout = payouts[i];
       const entry = {
         block,
-        payout_amount: Math.round((payout.payout_amount / ETH) * 1000) / 1000,
+        payout_amount: payout.payout_amount,
         token_id: payout.token_id ?? null,
         timestamp: payout.timestamp,
       };
