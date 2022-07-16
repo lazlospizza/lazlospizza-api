@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Request, RequestHandler, Response } from 'express';
 import { blockNumber } from 'services/ethers';
 import { calculatePayouts } from 'services/payout';
+import memoryCache from 'memory-cache';
 
 export const getCalculatedPayouts = async (req: Request, res: Response) => {
   try {
@@ -18,7 +19,13 @@ export const getBlockCalculatedPayouts: RequestHandler = async (req: Request, re
   try {
     if (!process.env.PAYOUT_DB) throw 'missing payout db';
     const { block } = req.query;
+    const cacheKey = `cache:calculatedBlockPayout:${block}`;
+    const cachedBody = memoryCache.get(cacheKey);
+    if (cachedBody) {
+      return res.send(cachedBody);
+    }
     const payouts = await calculatePayouts(parseInt(block as string), false);
+    memoryCache.put(cacheKey, payouts, 1000 * 5);
     return res.send(payouts);
   } catch (error) {
     return res.status(500).json(error);
