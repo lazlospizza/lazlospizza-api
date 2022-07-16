@@ -720,11 +720,6 @@
   resolved "https://registry.yarnpkg.com/@types/lru-cache/-/lru-cache-5.1.1.tgz#c48c2e27b65d2a153b19bfc1a317e30872e01eef"
   integrity sha512-ssE3Vlrys7sdIzs5LOxCzTVMsU7i9oa/IaW92wF32JFb3CVczqOkru2xspuKczHEbG3nvmPY7IFqVmGGHdNbYw==
 
-"@types/memory-cache@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@types/memory-cache/-/memory-cache-0.2.2.tgz#f8fb6d8aa0eb006ed44fc659bf8bfdc1a5cc57fa"
-  integrity sha512-xNnm6EkmYYhTnLiOHC2bdKgcYY5qjjrq5vl9KXD2nh0em0koZoFS500EL4Q4V/eW+A3P7NC7P7GIYzNOSQp7jQ==
-
 "@types/merge-images@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@types/merge-images/-/merge-images-1.2.1.tgz#fb051a842db66c3933d1f9cd5d8aba6891b6de2e"
