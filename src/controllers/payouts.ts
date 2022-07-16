@@ -25,7 +25,7 @@ export const getBlockCalculatedPayouts: RequestHandler = async (req: Request, re
       return res.send(cachedBody);
     }
     const payouts = await calculatePayouts(parseInt(block as string), false);
-    memoryCache.put(cacheKey, payouts, 1000 * 60 * 60 * 24);
+    memoryCache.put(cacheKey, payouts, 1000 * 60 * 20);
     return res.send(payouts);
   } catch (error) {
     return res.status(500).json(error);
