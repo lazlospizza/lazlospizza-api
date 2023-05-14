@@ -1,0 +1,760 @@
+{
+  "0x81A5e6fDA965b67A8a4D097073Edba09331073a4": [
+    {
+      "block": "15156000",
+      "payout_amount": 2497500000000000,
+      "token_id": null,
+      "timestamp": 1684087291
+    },
+    {
+      "block": "15157000",
+      "payout_amount": 2472525000000000,
+      "token_id": null,
+      "timestamp": 1684087299
+    },
+    {
+      "block": "15158000",
+      "payout_amount": 2447799750000000,
+      "token_id": null,
+      "timestamp": 1684087306
+    },
+    {
+      "block": "15159000",
+      "payout_amount": 2423321752500000,
+      "token_id": null,
+      "timestamp": 1684087315
+    },
+    {
+      "block": "15160000",
+      "payout_amount": 2399088534975000,
+      "token_id": null,
+      "timestamp": 1684087324
+    },
+    {
+      "block": "15161000",
+      "payout_amount": 2375097649625250,
+      "token_id": null,
+      "timestamp": 1684087332
+    },
+    {
+      "block": "15162000",
+      "payout_amount": 2351346673128998,
+      "token_id": null,
+      "timestamp": 1684087340
+    },
+    {
+      "block": "15163000",
+      "payout_amount": 2327833206397708,
+      "token_id": null,
+      "timestamp": 1684087348
+    },
+    {
+      "block": "15164000",
+      "payout_amount": 2304554874333731,
+      "token_id": null,
+      "timestamp": 1684087373
+    },
+    {
+      "block": "15165000",
+      "payout_amount": 2281509325590393,
+      "token_id": null,
+      "timestamp": 1684087384
+    },
+    {
+      "block": "15166000",
+      "payout_amount": 2258694232334489,
+      "token_id": null,
+      "timestamp": 1684087395
+    },
+    {
+      "block": "15167000",
+      "payout_amount": 2236107290011144,
+      "token_id": null,
+      "timestamp": 1684087405
+    },
+    {
+      "block": "15168000",
+      "payout_amount": 2213746217111033,
+      "token_id": null,
+      "timestamp": 1684087414
+    },
+    {
+      "block": "15169000",
+      "payout_amount": 2191608754939922,
+      "token_id": null,
+      "timestamp": 1684087423
+    },
+    {
+      "block": "15170000",
+      "payout_amount": 2169692667390523,
+      "token_id": null,
+      "timestamp": 1684087433
+    },
+    {
+      "block": "15171000",
+      "payout_amount": 2147995740716618,
+      "token_id": null,
+      "timestamp": 1684087443
+    },
+    {
+      "block": "15172000",
+      "payout_amount": 2126515783309452,
+      "token_id": null,
+      "timestamp": 1684087453
+    },
+    {
+      "block": "15173000",
+      "payout_amount": 2105250625476357,
+      "token_id": null,
+      "timestamp": 1684087462
+    },
+    {
+      "block": "15174000",
+      "payout_amount": 2084198119221594,
+      "token_id": null,
+      "timestamp": 1684087471
+    },
+    {
+      "block": "15175000",
+      "payout_amount": 2063356138029378,
+      "token_id": null,
+      "timestamp": 1684087479
+    },
+    {
+      "block": "15176000",
+      "payout_amount": 2042722576649084,
+      "token_id": null,
+      "timestamp": 1684087488
+    },
+    {
+      "block": "15177000",
+      "payout_amount": 2022295350882593,
+      "token_id": null,
+      "timestamp": 1684087498
+    },
+    {
+      "block": "15178000",
+      "payout_amount": 2002072397373767,
+      "token_id": null,
+      "timestamp": 1684087508
+    },
+    {
+      "block": "15179000",
+      "payout_amount": 1982051673400029,
+      "token_id": null,
+      "timestamp": 1684087517
+    },
+    {
+      "block": "15180000",
+      "payout_amount": 1962231156666029,
+      "token_id": null,
+      "timestamp": 1684087529
+    }
+  ],
+  "0x7701FEFd637eB85E2d7d5495b3C3b33703B8e847": [
+    {
+      "block": "15156000",
+      "payout_amount": 832500000000000,
+      "token_id": null,
+      "timestamp": 1684087291
+    },
+    {
+      "block": "15157000",
+      "payout_amount": 824175000000000,
+      "token_id": null,
+      "timestamp": 1684087299
+    },
+    {
+      "block": "15158000",
+      "payout_amount": 815933250000000,
+      "token_id": null,
+      "timestamp": 1684087306
+    },
+    {
+      "block": "15159000",
+      "payout_amount": 807773917500000,
+      "token_id": null,
+      "timestamp": 1684087315
+    },
+    {
+      "block": "15160000",
+      "payout_amount": 799696178325000,
+      "token_id": null,
+      "timestamp": 1684087324
+    },
+    {
+      "block": "15161000",
+      "payout_amount": 791699216541750,
+      "token_id": null,
+      "timestamp": 1684087332
+    },
+    {
+      "block": "15162000",
+      "payout_amount": 783782224376333,
+      "token_id": null,
+      "timestamp": 1684087340
+    },
+    {
+      "block": "15163000",
+      "payout_amount": 775944402132569,
+      "token_id": null,
+      "timestamp": 1684087348
+    },
+    {
+      "block": "15164000",
+      "payout_amount": 768184958111244,
+      "token_id": null,
+      "timestamp": 1684087373
+    },
+    {
+      "block": "15165000",
+      "payout_amount": 760503108530131,
+      "token_id": null,
+      "timestamp": 1684087384
+    },
+    {
+      "block": "15166000",
+      "payout_amount": 752898077444830,
+      "token_id": null,
+      "timestamp": 1684087395
+    },
+    {
+      "block": "15167000",
+      "payout_amount": 745369096670382,
+      "token_id": null,
+      "timestamp": 1684087405
+    },
+    {
+      "block": "15168000",
+      "payout_amount": 737915405703678,
+      "token_id": null,
+      "timestamp": 1684087414
+    },
+    {
+      "block": "15169000",
+      "payout_amount": 730536251646641,
+      "token_id": null,
+      "timestamp": 1684087423
+    },
+    {
+      "block": "15170000",
+      "payout_amount": 723230889130174,
+      "token_id": null,
+      "timestamp": 1684087433
+    },
+    {
+      "block": "15171000",
+      "payout_amount": 715998580238873,
+      "token_id": null,
+      "timestamp": 1684087443
+    },
+    {
+      "block": "15172000",
+      "payout_amount": 708838594436484,
+      "token_id": null,
+      "timestamp": 1684087453
+    },
+    {
+      "block": "15173000",
+      "payout_amount": 701750208492119,
+      "token_id": null,
+      "timestamp": 1684087462
+    },
+    {
+      "block": "15174000",
+      "payout_amount": 694732706407198,
+      "token_id": null,
+      "timestamp": 1684087471
+    },
+    {
+      "block": "15175000",
+      "payout_amount": 687785379343126,
+      "token_id": null,
+      "timestamp": 1684087479
+    },
+    {
+      "block": "15176000",
+      "payout_amount": 680907525549695,
+      "token_id": null,
+      "timestamp": 1684087488
+    },
+    {
+      "block": "15177000",
+      "payout_amount": 674098450294198,
+      "token_id": null,
+      "timestamp": 1684087498
+    },
+    {
+      "block": "15178000",
+      "payout_amount": 667357465791256,
+      "token_id": null,
+      "timestamp": 1684087508
+    },
+    {
+      "block": "15179000",
+      "payout_amount": 660683891133343,
+      "token_id": null,
+      "timestamp": 1684087517
+    },
+    {
+      "block": "15180000",
+      "payout_amount": 654077052222010,
+      "token_id": null,
+      "timestamp": 1684087529
+    }
+  ],
+  "0x2F9EFbE3BfdFd0dC274311a4B2A29c421b0F4ae5": [
+    {
+      "block": "15156000",
+      "payout_amount": 1110000000000000,
+      "token_id": 1,
+      "timestamp": 1658005296
+    },
+    {
+      "block": "15157000",
+      "payout_amount": 1098900000000000,
+      "token_id": 1,
+      "timestamp": 1658018689
+    },
+    {
+      "block": "15158000",
+      "payout_amount": 1087911000000000,
+      "token_id": 1,
+      "timestamp": 1658031393
+    },
+    {
+      "block": "15159000",
+      "payout_amount": 1077031890000000,
+      "token_id": 1,
+      "timestamp": 1658045164
+    },
+    {
+      "block": "15160000",
+      "payout_amount": 1066261571100000,
+      "token_id": 1,
+      "timestamp": 1658058817
+    },
+    {
+      "block": "15161000",
+      "payout_amount": 1055598955389000,
+      "token_id": 1,
+      "timestamp": 1658072522
+    },
+    {
+      "block": "15162000",
+      "payout_amount": 1045042965835110,
+      "token_id": 1,
+      "timestamp": 1658086178
+    },
+    {
+      "block": "15163000",
+      "payout_amount": 1034592536176759,
+      "token_id": 1,
+      "timestamp": 1658099432
+    },
+    {
+      "block": "15164000",
+      "payout_amount": 1024246610814991,
+      "token_id": 1,
+      "timestamp": 1658112288
+    },
+    {
+      "block": "15165000",
+      "payout_amount": 1014004144706841,
+      "token_id": 1,
+      "timestamp": 1658125540
+    },
+    {
+      "block": "15166000",
+      "payout_amount": 1003864103259773,
+      "token_id": 1,
+      "timestamp": 1658138964
+    },
+    {
+      "block": "15167000",
+      "payout_amount": 993825462227175,
+      "token_id": 1,
+      "timestamp": 1658152090
+    },
+    {
+      "block": "15168000",
+      "payout_amount": 983887207604903,
+      "token_id": 1,
+      "timestamp": 1658165315
+    },
+    {
+      "block": "15169000",
+      "payout_amount": 974048335528854,
+      "token_id": 1,
+      "timestamp": 1658179329
+    },
+    {
+      "block": "15170000",
+      "payout_amount": 964307852173566,
+      "token_id": 1,
+      "timestamp": 1658192829
+    },
+    {
+      "block": "15171000",
+      "payout_amount": 954664773651830,
+      "token_id": 1,
+      "timestamp": 1658205873
+    },
+    {
+      "block": "15172000",
+      "payout_amount": 945118125915312,
+      "token_id": 1,
+      "timestamp": 1658219723
+    },
+    {
+      "block": "15173000",
+      "payout_amount": 935666944656158,
+      "token_id": 1,
+      "timestamp": 1658232870
+    },
+    {
+      "block": "15174000",
+      "payout_amount": 926310275209597,
+      "token_id": 1,
+      "timestamp": 1658246447
+    },
+    {
+      "block": "15175000",
+      "payout_amount": 917047172457501,
+      "token_id": 1,
+      "timestamp": 1658259279
+    },
+    {
+      "block": "15176000",
+      "payout_amount": 907876700732926,
+      "token_id": 1,
+      "timestamp": 1658272747
+    },
+    {
+      "block": "15177000",
+      "payout_amount": 898797933725597,
+      "token_id": 1,
+      "timestamp": 1658285951
+    },
+    {
+      "block": "15178000",
+      "payout_amount": 889809954388341,
+      "token_id": 1,
+      "timestamp": 1658299671
+    },
+    {
+      "block": "15179000",
+      "payout_amount": 880911854844457,
+      "token_id": 1,
+      "timestamp": 1658313640
+    },
+    {
+      "block": "15180000",
+      "payout_amount": 872102736296013,
+      "token_id": 1,
+      "timestamp": 1658326664
+    }
+  ],
+  "0xafBDEc0ba91FDFf03A91CbdF07392e6D72d43712": [
+    {
+      "block": "15156000",
+      "payout_amount": 1110000000000000,
+      "token_id": 3,
+      "timestamp": 1658005296
+    },
+    {
+      "block": "15156000",
+      "payout_amount": 1110000000000000,
+      "token_id": 4,
+      "timestamp": 1658005296
+    },
+    {
+      "block": "15157000",
+      "payout_amount": 1098900000000000,
+      "token_id": 3,
+      "timestamp": 1658018689
+    },
+    {
+      "block": "15157000",
+      "payout_amount": 1098900000000000,
+      "token_id": 4,
+      "timestamp": 1658018689
+    },
+    {
+      "block": "15158000",
+      "payout_amount": 1087911000000000,
+      "token_id": 3,
+      "timestamp": 1658031393
+    },
+    {
+      "block": "15158000",
+      "payout_amount": 1087911000000000,
+      "token_id": 4,
+      "timestamp": 1658031393
+    },
+    {
+      "block": "15159000",
+      "payout_amount": 1077031890000000,
+      "token_id": 3,
+      "timestamp": 1658045164
+    },
+    {
+      "block": "15159000",
+      "payout_amount": 1077031890000000,
+      "token_id": 4,
+      "timestamp": 1658045164
+    },
+    {
+      "block": "15160000",
+      "payout_amount": 1066261571100000,
+      "token_id": 3,
+      "timestamp": 1658058817
+    },
+    {
+      "block": "15160000",
+      "payout_amount": 1066261571100000,
+      "token_id": 4,
+      "timestamp": 1658058817
+    },
+    {
+      "block": "15161000",
+      "payout_amount": 1055598955389000,
+      "token_id": 3,
+      "timestamp": 1658072522
+    },
+    {
+      "block": "15161000",
+      "payout_amount": 1055598955389000,
+      "token_id": 4,
+      "timestamp": 1658072522
+    },
+    {
+      "block": "15162000",
+      "payout_amount": 1045042965835110,
+      "token_id": 3,
+      "timestamp": 1658086178
+    },
+    {
+      "block": "15162000",
+      "payout_amount": 1045042965835110,
+      "token_id": 4,
+      "timestamp": 1658086178
+    },
+    {
+      "block": "15163000",
+      "payout_amount": 1034592536176759,
+      "token_id": 3,
+      "timestamp": 1658099432
+    },
+    {
+      "block": "15163000",
+      "payout_amount": 1034592536176759,
+      "token_id": 4,
+      "timestamp": 1658099432
+    },
+    {
+      "block": "15164000",
+      "payout_amount": 1024246610814991,
+      "token_id": 3,
+      "timestamp": 1658112288
+    },
+    {
+      "block": "15164000",
+      "payout_amount": 1024246610814991,
+      "token_id": 4,
+      "timestamp": 1658112288
+    },
+    {
+      "block": "15165000",
+      "payout_amount": 1014004144706841,
+      "token_id": 3,
+      "timestamp": 1658125540
+    },
+    {
+      "block": "15165000",
+      "payout_amount": 1014004144706841,
+      "token_id": 4,
+      "timestamp": 1658125540
+    },
+    {
+      "block": "15166000",
+      "payout_amount": 1003864103259773,
+      "token_id": 3,
+      "timestamp": 1658138964
+    },
+    {
+      "block": "15166000",
+      "payout_amount": 1003864103259773,
+      "token_id": 4,
+      "timestamp": 1658138964
+    },
+    {
+      "block": "15167000",
+      "payout_amount": 993825462227175,
+      "token_id": 3,
+      "timestamp": 1658152090
+    },
+    {
+      "block": "15167000",
+      "payout_amount": 993825462227175,
+      "token_id": 4,
+      "timestamp": 1658152090
+    },
+    {
+      "block": "15168000",
+      "payout_amount": 983887207604903,
+      "token_id": 3,
+      "timestamp": 1658165315
+    },
+    {
+      "block": "15168000",
+      "payout_amount": 983887207604903,
+      "token_id": 4,
+      "timestamp": 1658165315
+    },
+    {
+      "block": "15169000",
+      "payout_amount": 974048335528854,
+      "token_id": 3,
+      "timestamp": 1658179329
+    },
+    {
+      "block": "15169000",
+      "payout_amount": 974048335528854,
+      "token_id": 4,
+      "timestamp": 1658179329
+    },
+    {
+      "block": "15170000",
+      "payout_amount": 964307852173566,
+      "token_id": 3,
+      "timestamp": 1658192829
+    },
+    {
+      "block": "15170000",
+      "payout_amount": 964307852173566,
+      "token_id": 4,
+      "timestamp": 1658192829
+    },
+    {
+      "block": "15171000",
+      "payout_amount": 954664773651830,
+      "token_id": 3,
+      "timestamp": 1658205873
+    },
+    {
+      "block": "15171000",
+      "payout_amount": 954664773651830,
+      "token_id": 4,
+      "timestamp": 1658205873
+    },
+    {
+      "block": "15172000",
+      "payout_amount": 945118125915312,
+      "token_id": 3,
+      "timestamp": 1658219723
+    },
+    {
+      "block": "15172000",
+      "payout_amount": 945118125915312,
+      "token_id": 4,
+      "timestamp": 1658219723
+    },
+    {
+      "block": "15173000",
+      "payout_amount": 935666944656158,
+      "token_id": 3,
+      "timestamp": 1658232870
+    },
+    {
+      "block": "15173000",
+      "payout_amount": 935666944656158,
+      "token_id": 4,
+      "timestamp": 1658232870
+    },
+    {
+      "block": "15174000",
+      "payout_amount": 926310275209597,
+      "token_id": 3,
+      "timestamp": 1658246447
+    },
+    {
+      "block": "15174000",
+      "payout_amount": 926310275209597,
+      "token_id": 4,
+      "timestamp": 1658246447
+    },
+    {
+      "block": "15175000",
+      "payout_amount": 917047172457501,
+      "token_id": 3,
+      "timestamp": 1658259279
+    },
+    {
+      "block": "15175000",
+      "payout_amount": 917047172457501,
+      "token_id": 4,
+      "timestamp": 1658259279
+    },
+    {
+      "block": "15176000",
+      "payout_amount": 907876700732926,
+      "token_id": 3,
+      "timestamp": 1658272747
+    },
+    {
+      "block": "15176000",
+      "payout_amount": 907876700732926,
+      "token_id": 4,
+      "timestamp": 1658272747
+    },
+    {
+      "block": "15177000",
+      "payout_amount": 898797933725597,
+      "token_id": 3,
+      "timestamp": 1658285951
+    },
+    {
+      "block": "15177000",
+      "payout_amount": 898797933725597,
+      "token_id": 4,
+      "timestamp": 1658285951
+    },
+    {
+      "block": "15178000",
+      "payout_amount": 889809954388341,
+      "token_id": 3,
+      "timestamp": 1658299671
+    },
+    {
+      "block": "15178000",
+      "payout_amount": 889809954388341,
+      "token_id": 4,
+      "timestamp": 1658299671
+    },
+    {
+      "block": "15179000",
+      "payout_amount": 880911854844457,
+      "token_id": 3,
+      "timestamp": 1658313640
+    },
+    {
+      "block": "15179000",
+      "payout_amount": 880911854844457,
+      "token_id": 4,
+      "timestamp": 1658313640
+    },
+    {
+      "block": "15180000",
+      "payout_amount": 872102736296013,
+      "token_id": 3,
+      "timestamp": 1658326664
+    },
+    {
+      "block": "15180000",
+      "payout_amount": 872102736296013,
+      "token_id": 4,
+      "timestamp": 1658326664
+    }
+  ]
+}

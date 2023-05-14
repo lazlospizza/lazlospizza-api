@@ -32,6 +32,7 @@ export const getArtistUnclaimedPayout = async () => {
 };
 
 export const getUnclaimedPayouts = async () => {
+  console.log("WHATSTED ");
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   if (!process.env.PAYOUT_DB) throw 'missing payout db';
 
@@ -48,23 +49,35 @@ export const getUnclaimedPayouts = async () => {
   }
 
   const payoutAddresses = Object.keys(payoutHistory);
-  const unclaimedPayouts = [];
+  const allPromises = [];
 
   for (let i = 0; i < payoutAddresses.length; i += 1) {
-    const allAddressPayouts = await Promise.all(
-      (payoutHistory[payoutAddresses[i]] || []).map(async (payout: any) => {
-        const isPaidOut = await contract.isPaidOutForBlock(payoutAddresses[i], payout.block);
-        if (!isPaidOut) {
+  allPromises.push(...(payoutHistory[payoutAddresses[i]] || []).map((payout: any) => {
+      return contract.isPaidOutForBlock(payoutAddresses[i], payout.block).then((isPaidOut) => {
+      if (!isPaidOut) {
           return { address: payoutAddresses[i], payout };
-        }
-        return null;
-      }),
-    );
-    const unclaimedAddressPayouts = allAddressPayouts.filter((payout: any) => !!payout);
-    unclaimedPayouts.push(...unclaimedAddressPayouts);
+      }
+      return null;
+      });
+  }));
   }
 
-  return unclaimedPayouts;
+  const payouts = await Promise.all(allPromises)
+  .then((allAddressPayouts) => {
+      const unclaimedAddressPayouts = allAddressPayouts.filter((payout: any) => !!payout);
+      const total: number = unclaimedAddressPayouts.reduce(
+          (prev, current) => (prev + (current.payout?.payout_amount ? current.payout?.payout_amount : 0)),
+          0,
+        );
+        console.log(`Total payouts from now are  are: ${total}`);
+      //unclaimedPayouts.push(...unclaimedAddressPayouts);
+      return unclaimedAddressPayouts; // return this here
+  })
+  .catch((error) => {
+      console.error("Error in Promise.all: ", error);
+  });
+
+  return payouts ? payouts : [];
 };
 
 export const calculatePayouts = async (block: number, uploadToS3 = false) => {
@@ -90,7 +103,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   const unclaimedPayouts = await getUnclaimedPayouts();
 
   const unclaimedPayoutsTotal: number = unclaimedPayouts.reduce(
-    (prev, current) => (prev + current.payout?.payout_amount ? current.payout?.payout_amount : 0),
+    (prev, current) => (prev + (current.payout?.payout_amount ? current.payout?.payout_amount : 0)),
     0,
   );
 

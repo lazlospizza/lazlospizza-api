@@ -22,5 +22,6 @@ export const uploadJsonToS3 = async (json: any, folder: S3Folder) => {
     Key: `${folder}/${process.env.ETH_NETWORK}.json`,
     Body: buffer,
   };
-  return s3.putObject(params).promise();
+  return "nope";
+  //return s3.putObject(params).promise();
 };
