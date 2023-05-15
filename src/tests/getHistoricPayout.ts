@@ -93,23 +93,16 @@ const getUnclaimedPayoutsForBlock = async (block: number, payoutHistory: {}) => 
         unclaimedPayouts.push(...unclaimedAddressPayouts);
         return unclaimedAddressPayouts; // return this here
     })
-    // .then((unclaimedAddressPayouts) => {
-    //     // Now you can access unclaimedAddressPayouts here
-    //     const total: number = unclaimedAddressPayouts.reduce(
-    //         (prev, current) => (prev + current.payout?.payout_amount ? current.payout?.payout_amount : 0),
-    //         0,
-    //       );
-    //       console.log(`Total payouts from now are  are: ${total}`);
-    // })
     .catch((error) => {
         console.error("Error in Promise.all: ", error);
+        process.exit(1);
     });
 
     const total: number = unclaimedPayouts.reduce(
         (prev, current) => (prev + current.payout?.payout_amount ? current.payout?.payout_amount : 0),
         0,
       );
-    console.log(`Total payouts from now are 2 are: ${total}`);
+    //console.log(`Total payouts from now are 2 are: ${total}`);
     return payouts ? payouts : [];
     
   };
@@ -163,6 +156,8 @@ const getArtistUnclaimedPayoutForBlock = async (block: number, ingredients: any[
   console.log({ artistUnclaimedTotal });
 
   const prizePool = balance - unclaimedPayoutsTotal - artistUnclaimedTotal;
+  console.log("current balance: ", balance);
+  console.log("current prizePool: ", prizePool);
   const developerRewards = Math.round(prizePool * 0.0025);
   const creatorRewards = Math.round(prizePool * 0.0075);
   const rarityRewards = Math.round(prizePool * 0.01);
@@ -247,12 +242,29 @@ const main = async () => {
     const ingredients = await getIngredients();
     //get new rewards
     const blocks = Object.keys(ref);
-    let result = {};
+    
+
+    //let result;
+    let result: {[key: string]: any[]};
+    const filePath = 'outputV2.json';
+    if (fs.existsSync(filePath)) {
+        const rawData = fs.readFileSync(filePath);
+        result = JSON.parse(rawData.toString());
+    } else {
+        result = {};
+    }
+
     console.log(blocks)
     for(let i = 0; i < blocks.length; i += 1) {
         let block = blocks[i];
         console.log(block)
-        console.log(parseInt(block));
+
+          // Skip this block if it's already in the results
+          if (Object.values(result).flat().some((_payout: {block: string}) => _payout.block === block)) {
+            console.log(`Block ${block} already processed, skipping...`);
+            continue;
+        }
+        //console.log(parseInt(block));
         let payouts = await calculatePayouts(parseInt(block), ref[block], result, ingredients);
         for (let i = 0; i < payouts.length; i += 1) {
             const payout = payouts[i];
@@ -270,12 +282,17 @@ const main = async () => {
                 result[payout.address] = [entry];
             }
         }
-    console.log(result);
+    //console.log(result);
     fs.writeFile('outputV2.json', JSON.stringify(result, null, 2), (err) => {
         if (err) throw err;
-        console.log('Data written to file');
+        //console.log('Data written to file');
     });
+    await delay(2000);  
     }
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 main();
