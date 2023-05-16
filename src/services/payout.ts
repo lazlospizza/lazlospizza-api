@@ -9,8 +9,9 @@ import { S3Folder, uploadJsonToS3 } from './s3';
 export const getArtistUnclaimedPayout = async () => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, infuraProvider);
+  //const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, alchemyProvider);
   const ingredients = await getIngredients();
 
   const artists: string[] = uniq(ingredients.map(({ artist }) => artist));
@@ -32,12 +33,12 @@ export const getArtistUnclaimedPayout = async () => {
 };
 
 export const getUnclaimedPayouts = async () => {
-  console.log("WHATSTED ");
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   if (!process.env.PAYOUT_DB) throw 'missing payout db';
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, infuraProvider);
+  // const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, alchemyProvider);
 
   let payoutHistory = {};
 
@@ -97,8 +98,8 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
 
   console.log(winningPizzas);
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const _balance = await infuraProvider.getBalance(process.env.MAIN_CONTRACT_ADDRESS);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const _balance = await alchemyProvider.getBalance(process.env.MAIN_CONTRACT_ADDRESS);
   const balance = parseInt(_balance._hex, 16);
   const unclaimedPayouts = await getUnclaimedPayouts();
 
@@ -114,9 +115,10 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
   console.log({ artistUnclaimedTotal });
 
   const prizePool = balance - unclaimedPayoutsTotal - artistUnclaimedTotal;
-  const developerRewards = Math.round(prizePool * 0.0025);
-  const creatorRewards = Math.round(prizePool * 0.0075);
-  const rarityRewards = Math.round(prizePool * 0.01);
+  const developerRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.0025);
+  const creatorRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.0075);
+  const rarityRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.01);
+  
 
   const now = Math.floor(Date.now() / 1000);
 

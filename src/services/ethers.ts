@@ -25,9 +25,10 @@ export const initListeners = () => {
   console.log('Connecting to', process.env.ETH_NETWORK);
   console.log('Main contract address', process.env.PIZZA_CONTRACT_ADDRESS);
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const pizzaContract = LazlosPizzas__factory.connect(process.env.PIZZA_CONTRACT_ADDRESS, infuraProvider);
-  const ingredientsContract = LazlosIngredients__factory.connect(process.env.INGREDIENTS_CONTRACT_ADDRESS, infuraProvider);
+  //const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const pizzaContract = LazlosPizzas__factory.connect(process.env.PIZZA_CONTRACT_ADDRESS, alchemyProvider);
+  const ingredientsContract = LazlosIngredients__factory.connect(process.env.INGREDIENTS_CONTRACT_ADDRESS, alchemyProvider);
 
   pizzaContract.on('Transfer', (from: string, to: string, id: BigNumber, txn) => onMintOrBurn(from, to));
   ingredientsContract.on('TransferBatch', (operator: string, from: string, to: string, ids: BigNumber[], amounts: BigNumber[], txn) =>
@@ -36,7 +37,7 @@ export const initListeners = () => {
   ingredientsContract.on('TransferSingle', (operator: string, from: string, to: string, ids: BigNumber[], amounts: BigNumber[], txn) =>
     onMintOrBurn(from, to),
   );
-  infuraProvider.on('block', async _blockNumber => {
+  alchemyProvider.on('block', async _blockNumber => {
     blockNumber = _blockNumber;
     console.log(blockNumber);
     if (!process.env.PAYOUT_BLOCK_INTERVAL || !Number(process.env.PAYOUT_BLOCK_INTERVAL)) return null;

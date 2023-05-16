@@ -31,8 +31,9 @@ const ingredientTypes = [IngredientType.base, IngredientType.sauce, IngredientTy
 export const getIngredients = async () => {
   if (!process.env.INGREDIENTS_CONTRACT_ADDRESS) throw 'missing ingredients contract address';
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const contract = LazlosIngredients__factory.connect(process.env.INGREDIENTS_CONTRACT_ADDRESS, infuraProvider);
+  // const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const contract = LazlosIngredients__factory.connect(process.env.INGREDIENTS_CONTRACT_ADDRESS, alchemyProvider);
   const _numberOfIngredients = await contract.numIngredients();
   const numberOfIngredients = parseInt(_numberOfIngredients._hex, 16);
 
@@ -69,8 +70,9 @@ export const getIngredients = async () => {
 export const getPizzas = async () => {
   if (!process.env.PIZZA_CONTRACT_ADDRESS) throw 'missing pizza contract address';
 
-  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const contract = LazlosPizzas__factory.connect(process.env.PIZZA_CONTRACT_ADDRESS, infuraProvider);
+  // const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const contract = LazlosPizzas__factory.connect(process.env.PIZZA_CONTRACT_ADDRESS, alchemyProvider);
   const _numberOfPizzas = await contract.numPizzas();
   const numberOfPizzas = parseInt(_numberOfPizzas._hex, 16);
 

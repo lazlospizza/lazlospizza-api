@@ -112,7 +112,6 @@ const getArtistUnclaimedPayoutForBlock = async (block: number, ingredients: any[
     if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   
     const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
-    
     const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, alchemyProvider);
     const artists: string[] = uniq(ingredients.map(({ artist }) => artist));
   
@@ -158,10 +157,11 @@ const getArtistUnclaimedPayoutForBlock = async (block: number, ingredients: any[
   const prizePool = balance - unclaimedPayoutsTotal - artistUnclaimedTotal;
   console.log("current balance: ", balance);
   console.log("current prizePool: ", prizePool);
-  const developerRewards = Math.round(prizePool * 0.0025);
-  const creatorRewards = Math.round(prizePool * 0.0075);
-  const rarityRewards = Math.round(prizePool * 0.01);
 
+  const developerRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.0025);
+  const creatorRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.0075);
+  const rarityRewards = prizePool < 0 ? 0 : Math.round(prizePool * 0.01);
+  
   const now = Math.floor(Date.now() / 1000);
 
   const creatorPayouts = [
