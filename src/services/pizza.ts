@@ -2,7 +2,7 @@ import { BigNumber, providers } from 'ethers';
 import { Ingredient, IngredientType, Pizza } from '../types';
 import { LazlosIngredients__factory, LazlosPizzas__factory } from '../typechain-types';
 import { ETH, ZERO_ADDRESS } from '../constants';
-import { uploadJsonToS3, S3Folder } from './s3';
+import { uploadJsonToS3, S3Folder, uploadTestJsonToS3 } from './s3';
 import axios from 'axios';
 import { uniqBy } from 'lodash';
 
@@ -156,6 +156,35 @@ export const getPizzas = async () => {
       return { ...pizza, rarity };
     }),
   );
+
+  await uploadJsonToS3(pizzas, S3Folder.pizzas);
+  await uploadJsonToS3(ingredients, S3Folder.ingredientsJson);
+
+  return { pizzas, ingredients } as {
+    pizzas: Pizza[];
+    ingredients: Ingredient[];
+  };
+};
+
+
+export const getStoredPizzas = async () => {
+  if (!process.env.PIZZA_CONTRACT_ADDRESS) throw 'missing pizza contract address';
+
+  let pizzas: Pizza[] = [];
+  try {
+    const pizzasRes = await axios.get(process.env.PIZZAS_DB);
+    pizzas = (pizzasRes.data || []) as Pizza[];
+  } catch (e) {
+    console.log(e);
+  }
+
+  let ingredients: Ingredient[] = [];
+  try {
+    const ingredientRes = await axios.get(process.env.INGREDIENTS_DB);
+    ingredients = (ingredientRes.data || []) as Ingredient[];
+  } catch (e) {
+    console.log(e);
+  }
 
   return { pizzas, ingredients } as {
     pizzas: Pizza[];

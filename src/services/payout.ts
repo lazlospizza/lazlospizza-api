@@ -96,7 +96,7 @@ export const calculatePayouts = async (block: number, uploadToS3 = false) => {
     console.log(e);
   }
 
-  console.log(winningPizzas);
+  // console.log(winningPizzas);
 
   const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
   const _balance = await alchemyProvider.getBalance(process.env.MAIN_CONTRACT_ADDRESS);

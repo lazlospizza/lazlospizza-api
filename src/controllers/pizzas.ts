@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const getPizzas = async (req: Request, res: Response) => {
   try {
-    const { pizzas, ingredients } = await pizzaService.getPizzas();
+    const { pizzas, ingredients } = await pizzaService.getStoredPizzas();
     return res.send({ pizzas, ingredients });
   } catch (error) {
     return res.status(500).json(error);
