@@ -36,9 +36,9 @@ export const getUnclaimedPayouts = async () => {
   if (!process.env.MAIN_CONTRACT_ADDRESS) throw 'missing main contract address';
   if (!process.env.PAYOUT_DB) throw 'missing payout db';
 
-  // const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
-  const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
-  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, alchemyProvider);
+  const infuraProvider = new providers.InfuraProvider(process.env.ETH_NETWORK, process.env.INFURA_ID);
+  //const alchemyProvider = new providers.AlchemyProvider(process.env.ETH_NETWORK, process.env.ALCHEMY_ID);
+  const contract = LazlosPizzaShop__factory.connect(process.env.MAIN_CONTRACT_ADDRESS, infuraProvider);
 
   let payoutHistory = {};
 

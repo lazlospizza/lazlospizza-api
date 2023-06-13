@@ -5,7 +5,8 @@ export enum S3Folder {
   'winning_pizzas' = 'winning_pizzas',
   'winners' = 'winners',
   'ingredientsJson' = 'ingredientsJson',
-  'pizzas' = 'pizzas'
+  'pizzas' = 'pizzas',
+  'unclaimed' = 'unclaimed'
 }
 
 export const uploadJsonToS3 = async (json: any, folder: S3Folder) => {
